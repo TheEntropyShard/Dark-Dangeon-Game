@@ -15,6 +15,7 @@ import static future.code.dark.dungeon.config.Configuration.SPRITE_SIZE;
 
 public class GameFrame extends JPanel implements ActionListener {
     private final GameMaster gameMaster;
+    public static int ticks;
 
     public GameFrame(JFrame frame) {
         Timer timer = new Timer(GAME_FRAMES_PER_SECOND, this);
@@ -33,5 +34,6 @@ public class GameFrame extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         this.repaint();
+        ticks++;
     }
 }

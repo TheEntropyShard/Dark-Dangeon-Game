@@ -1,5 +1,6 @@
 package future.code.dark.dungeon.service;
 
+import future.code.dark.dungeon.GameFrame;
 import future.code.dark.dungeon.config.Configuration;
 import future.code.dark.dungeon.domen.*;
 import future.code.dark.dungeon.util.FileUtils;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 public class GameMaster {
     private static GameMaster instance;
     private static Image wonImage = FileUtils.loadImage("/assets/victory.jpg");
+    private static Image gameOverImage = FileUtils.loadImage("/assets/game_over_screen.jpeg");
 
     private final Map map;
     private final List<GameObject> gameObjects;
@@ -31,6 +33,8 @@ public class GameMaster {
             this.map = new Map(Configuration.MAP_FILE_PATH);
             this.gameObjects = initGameObjects(map.getMap());
             wonImage = wonImage.getScaledInstance(this.map.getWidth() * Configuration.SPRITE_SIZE,
+                    this.map.getHeight() * Configuration.SPRITE_SIZE, BufferedImage.SCALE_SMOOTH);
+            gameOverImage = gameOverImage.getScaledInstance(this.map.getWidth() * Configuration.SPRITE_SIZE,
                     this.map.getHeight() * Configuration.SPRITE_SIZE, BufferedImage.SCALE_SMOOTH);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
@@ -64,6 +68,10 @@ public class GameMaster {
             graphics.drawImage(GameMaster.wonImage, 0, 0, null);
             return;
         }
+        if(player.isGameOver()) {
+            graphics.drawImage(GameMaster.gameOverImage, 0, 0, null);
+            return;
+        }
         this.getMap().render(graphics);
         this.getStaticObjects().forEach(gameObject -> {
             if(gameObject instanceof Coin c && !c.isCollected()) {
@@ -74,7 +82,15 @@ public class GameMaster {
             }
             gameObject.render(graphics);
         });
-        this.getEnemies().forEach(gameObject -> gameObject.render(graphics));
+        this.getEnemies().forEach(enemy -> {
+            if(enemy.getXPosition() == player.getXPosition() && enemy.getYPosition() == player.getYPosition()) {
+                player.gameOver();
+            }
+            if(GameFrame.ticks % 15 == 0) {
+                enemy.move(DynamicObject.Direction.getRandomDirection(), 1);
+            }
+            enemy.render(graphics);
+        });
         player.render(graphics);
         graphics.setColor(Color.WHITE);
         graphics.drawString(player.toString(), 10, 20);

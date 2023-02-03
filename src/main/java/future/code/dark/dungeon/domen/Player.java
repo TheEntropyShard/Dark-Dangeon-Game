@@ -6,6 +6,7 @@ public class Player extends DynamicObject {
     private static final int stepSize = 1;
     private int coins;
     private boolean won;
+    private boolean gameOver;
 
     public Player(int xPosition, int yPosition) {
         super(xPosition, yPosition, Configuration.PLAYER_SPRITE);
@@ -34,5 +35,13 @@ public class Player extends DynamicObject {
 
     public boolean isWon() {
         return this.won;
+    }
+
+    public boolean isGameOver() {
+        return this.gameOver;
+    }
+
+    public void gameOver() {
+        this.gameOver = true;
     }
 }

@@ -5,7 +5,7 @@ public enum Configuration {
 
     public static final String GAME_NAME = "Dark Dungeon";
     public static final String MAP_FILE_PATH = "/maps/map.ber";
-    public static final Boolean ENEMIES_ACTIVE = false;
+    public static final Boolean ENEMIES_ACTIVE = true;
     public static final int GAME_FRAMES_PER_SECOND = 40;
     public static final char WALL_CHARACTER = '1';
     public static final char EXIT_CHARACTER = 'E';

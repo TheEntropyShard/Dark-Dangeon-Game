@@ -9,10 +9,16 @@ public abstract class DynamicObject extends GameObject {
     }
 
     public enum Direction {
-        UP, DOWN, LEFT, RIGHT
+        UP, DOWN, LEFT, RIGHT;
+
+        private static final Direction[] VALUES = Direction.values();
+
+        public static Direction getRandomDirection() {
+            return Direction.VALUES[(int) (Math.random() * Direction.VALUES.length)];
+        }
     }
 
-    protected void move(Direction direction, int distance) {
+    public void move(Direction direction, int distance) {
         int tmpXPosition = this.getXPosition();
         int tmpYPosition = this.getYPosition();
 
@@ -30,6 +36,9 @@ public abstract class DynamicObject extends GameObject {
                 } else {
                     p.won();
                 }
+            }
+            if(this instanceof Enemy) {
+                return;
             }
         }
 
