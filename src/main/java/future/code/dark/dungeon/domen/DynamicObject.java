@@ -3,7 +3,7 @@ package future.code.dark.dungeon.domen;
 import future.code.dark.dungeon.config.Configuration;
 import future.code.dark.dungeon.service.GameMaster;
 
-public abstract class DynamicObject extends GameObject {
+public abstract class DynamicObject extends AnimatedObject {
     public DynamicObject(int xPosition, int yPosition, String imagePath) {
         super(xPosition, yPosition, imagePath);
     }
