@@ -9,7 +9,6 @@ import java.awt.Image;
 import static future.code.dark.dungeon.config.Configuration.SPRITE_SIZE;
 
 public abstract class GameObject {
-
     private final Image image;
     protected int xPosition;
     protected int yPosition;
@@ -22,15 +21,19 @@ public abstract class GameObject {
     }
 
     public int getXPosition() {
-        return xPosition;
+        return this.xPosition;
     }
 
     public int getYPosition() {
-        return yPosition;
+        return this.yPosition;
     }
 
     public void render(Graphics graphics) {
-        graphics.drawImage(image, xPosition * SPRITE_SIZE, yPosition  * SPRITE_SIZE, null);
+        if(this instanceof Coin c) {
+            if(c.isCollected()) {
+                return;
+            }
+        }
+        graphics.drawImage(this.image, this.xPosition * SPRITE_SIZE, this.yPosition  * SPRITE_SIZE, null);
     }
-
 }

@@ -1,16 +1,11 @@
 package future.code.dark.dungeon.service;
 
 import future.code.dark.dungeon.config.Configuration;
-import future.code.dark.dungeon.domen.Coin;
-import future.code.dark.dungeon.domen.DynamicObject;
-import future.code.dark.dungeon.domen.Enemy;
-import future.code.dark.dungeon.domen.Exit;
-import future.code.dark.dungeon.domen.GameObject;
-import future.code.dark.dungeon.domen.Map;
-import future.code.dark.dungeon.domen.Player;
+import future.code.dark.dungeon.domen.*;
+import future.code.dark.dungeon.util.FileUtils;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +13,8 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class GameMaster {
-
     private static GameMaster instance;
+    private static Image wonImage = FileUtils.loadImage("/assets/victory.jpg");
 
     private final Map map;
     private final List<GameObject> gameObjects;
@@ -35,6 +30,8 @@ public class GameMaster {
         try {
             this.map = new Map(Configuration.MAP_FILE_PATH);
             this.gameObjects = initGameObjects(map.getMap());
+            wonImage = wonImage.getScaledInstance(this.map.getWidth() * Configuration.SPRITE_SIZE,
+                    this.map.getHeight() * Configuration.SPRITE_SIZE, BufferedImage.SCALE_SMOOTH);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -62,13 +59,26 @@ public class GameMaster {
     }
 
     public void renderFrame(Graphics graphics) {
-        this.getMap().render(graphics);
-        this.getStaticObjects().forEach(gameObject -> gameObject.render(graphics));
-        this.getEnemies().forEach(gameObject -> gameObject.render(graphics));
         Player player = this.getPlayer();
+        if(player.isWon()) {
+            graphics.drawImage(GameMaster.wonImage, 0, 0, null);
+            return;
+        }
+        this.getMap().render(graphics);
+        this.getStaticObjects().forEach(gameObject -> {
+            if(gameObject instanceof Coin c && !c.isCollected()) {
+                if(c.getXPosition() == player.getXPosition() && c.getYPosition() == player.getYPosition()) {
+                    player.addCoins(1);
+                    c.setCollected(true);
+                }
+            }
+            gameObject.render(graphics);
+        });
+        this.getEnemies().forEach(gameObject -> gameObject.render(graphics));
         player.render(graphics);
         graphics.setColor(Color.WHITE);
         graphics.drawString(player.toString(), 10, 20);
+        graphics.drawString("Coins: " + player.getCoins() + "/9", 10, 35);
     }
 
     public Player getPlayer() {

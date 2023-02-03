@@ -13,14 +13,24 @@ public abstract class DynamicObject extends GameObject {
     }
 
     protected void move(Direction direction, int distance) {
-        int tmpXPosition = getXPosition();
-        int tmpYPosition = getYPosition();
+        int tmpXPosition = this.getXPosition();
+        int tmpYPosition = this.getYPosition();
 
         switch (direction) {
             case UP -> tmpYPosition -= distance;
             case DOWN -> tmpYPosition += distance;
             case LEFT -> tmpXPosition -= distance;
             case RIGHT -> tmpXPosition += distance;
+        }
+
+        if(GameMaster.getInstance().getMap().getMap()[tmpYPosition][tmpXPosition] == Configuration.EXIT_CHARACTER) {
+            if(this instanceof Player p) {
+                if(p.getCoins() != Configuration.MAX_COINS) {
+                    return;
+                } else {
+                    p.won();
+                }
+            }
         }
 
         if (isAllowedSurface(tmpXPosition, tmpYPosition)) {
