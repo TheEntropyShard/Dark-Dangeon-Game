@@ -17,12 +17,6 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static future.code.dark.dungeon.config.Configuration.COIN_CHARACTER;
-import static future.code.dark.dungeon.config.Configuration.ENEMIES_ACTIVE;
-import static future.code.dark.dungeon.config.Configuration.ENEMY_CHARACTER;
-import static future.code.dark.dungeon.config.Configuration.EXIT_CHARACTER;
-import static future.code.dark.dungeon.config.Configuration.PLAYER_CHARACTER;
-
 public class GameMaster {
 
     private static GameMaster instance;
@@ -31,7 +25,7 @@ public class GameMaster {
     private final List<GameObject> gameObjects;
 
     public static synchronized GameMaster getInstance() {
-        if (instance == null) {
+        if(instance == null) {
             instance = new GameMaster();
         }
         return instance;
@@ -49,15 +43,17 @@ public class GameMaster {
     private List<GameObject> initGameObjects(char[][] map) {
         List<GameObject> gameObjects = new ArrayList<>();
         Consumer<GameObject> addGameObject = gameObjects::add;
-        Consumer<Enemy> addEnemy = enemy -> {if (ENEMIES_ACTIVE) gameObjects.add(enemy);};
+        Consumer<Enemy> addEnemy = enemy -> {
+            if(Configuration.ENEMIES_ACTIVE) gameObjects.add(enemy);
+        };
 
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[i].length; j++) {
-                switch (map[i][j]) {
-                    case EXIT_CHARACTER -> addGameObject.accept(new Exit(j, i));
-                    case COIN_CHARACTER -> addGameObject.accept(new Coin(j, i));
-                    case ENEMY_CHARACTER -> addEnemy.accept(new Enemy(j, i));
-                    case PLAYER_CHARACTER -> addGameObject.accept(new Player(j, i));
+        for(int i = 0; i < map.length; i++) {
+            for(int j = 0; j < map[i].length; j++) {
+                switch(map[i][j]) {
+                    case Configuration.EXIT_CHARACTER -> addGameObject.accept(new Exit(j, i));
+                    case Configuration.COIN_CHARACTER -> addGameObject.accept(new Coin(j, i));
+                    case Configuration.ENEMY_CHARACTER -> addEnemy.accept(new Enemy(j, i));
+                    case Configuration.PLAYER_CHARACTER -> addGameObject.accept(new Player(j, i));
                 }
             }
         }
@@ -66,12 +62,13 @@ public class GameMaster {
     }
 
     public void renderFrame(Graphics graphics) {
-        getMap().render(graphics);
-        getStaticObjects().forEach(gameObject -> gameObject.render(graphics));
-        getEnemies().forEach(gameObject -> gameObject.render(graphics));
-        getPlayer().render(graphics);
+        this.getMap().render(graphics);
+        this.getStaticObjects().forEach(gameObject -> gameObject.render(graphics));
+        this.getEnemies().forEach(gameObject -> gameObject.render(graphics));
+        Player player = this.getPlayer();
+        player.render(graphics);
         graphics.setColor(Color.WHITE);
-        graphics.drawString(getPlayer().toString(), 10, 20);
+        graphics.drawString(player.toString(), 10, 20);
     }
 
     public Player getPlayer() {
@@ -95,7 +92,6 @@ public class GameMaster {
     }
 
     public Map getMap() {
-        return map;
+        return this.map;
     }
-
 }

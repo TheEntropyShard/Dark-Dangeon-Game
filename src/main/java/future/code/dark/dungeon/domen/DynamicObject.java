@@ -4,7 +4,6 @@ import future.code.dark.dungeon.config.Configuration;
 import future.code.dark.dungeon.service.GameMaster;
 
 public abstract class DynamicObject extends GameObject {
-
     public DynamicObject(int xPosition, int yPosition, String imagePath) {
         super(xPosition, yPosition, imagePath);
     }
@@ -25,13 +24,12 @@ public abstract class DynamicObject extends GameObject {
         }
 
         if (isAllowedSurface(tmpXPosition, tmpYPosition)) {
-            xPosition = tmpXPosition;
-            yPosition = tmpYPosition;
+            this.xPosition = tmpXPosition;
+            this.yPosition = tmpYPosition;
         }
     }
 
     private Boolean isAllowedSurface(int x, int y) {
         return GameMaster.getInstance().getMap().getMap()[y][x] != Configuration.WALL_CHARACTER;
     }
-
 }

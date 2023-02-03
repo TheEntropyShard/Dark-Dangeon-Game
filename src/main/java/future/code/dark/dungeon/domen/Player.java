@@ -15,6 +15,6 @@ public class Player extends DynamicObject {
 
     @Override
     public String toString() {
-        return "Player{[" + xPosition + ":" + yPosition + "]}";
+        return "Player{[" + this.xPosition + ":" + this.yPosition + "]}";
     }
 }

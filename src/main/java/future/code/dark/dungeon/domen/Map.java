@@ -18,21 +18,19 @@ import static future.code.dark.dungeon.config.Configuration.WALL_CHARACTER;
 import static future.code.dark.dungeon.config.Configuration.WALL_SPRITE;
 
 public class Map {
-
-    private static final Image wallImage = new ImageIcon(WALL_SPRITE).getImage();
-    private static final Image landImage = new ImageIcon(LAND_SPRITE).getImage();
-    private static final Image exitImage = new ImageIcon(EXIT_SPRITE).getImage();
+    private static final Image wallImage = FileUtils.loadImage(WALL_SPRITE);
+    private static final Image landImage = FileUtils.loadImage(LAND_SPRITE);
+    private static final Image exitImage = FileUtils.loadImage(EXIT_SPRITE);
     private final char[][] map;
 
     public Map(String mapPath) throws FileNotFoundException {
-        List<String> lines = FileUtils.readFile(mapPath);
+        List<String> lines = FileUtils.readFile(Map.class.getResourceAsStream(mapPath));
 
         if (!validate(lines)) {
             throw new RuntimeException("Map is not valid");
         }
 
         this.map = createMap(lines);
-
     }
 
     private char[][] createMap(List<String> lines) {
@@ -122,5 +120,4 @@ public class Map {
     public char[][] getMap() {
         return map;
     }
-
 }

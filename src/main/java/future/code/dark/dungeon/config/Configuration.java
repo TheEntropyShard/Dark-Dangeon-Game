@@ -1,23 +1,23 @@
 package future.code.dark.dungeon.config;
 
-public interface Configuration {
+public enum Configuration {
+    ;
 
-    String GAME_NAME="Dark Dungeon";
-    String MAP_FILE_PATH = "src/main/resources/maps/map.ber";
-    Boolean ENEMIES_ACTIVE = true;
-    int GAME_FRAMES_PER_SECOND = 40;
-    char WALL_CHARACTER = '1';
-    char EXIT_CHARACTER = 'E';
-    char LAND_CHARACTER = '0';
-    char PLAYER_CHARACTER = 'P';
-    char ENEMY_CHARACTER = 'G';
-    char COIN_CHARACTER = 'C';
-    Integer SPRITE_SIZE = 64;
-    String PLAYER_SPRITE = "src/main/resources/assets/hero/tile000.png";
-    String GHOST_SPRITE = "src/main/resources/assets/ghost/tile000.png";
-    String WALL_SPRITE = "src/main/resources/assets/land/wall.png";
-    String LAND_SPRITE = "src/main/resources/assets/land/ground.png";
-    String EXIT_SPRITE = "src/main/resources/assets/land/out.png";
-    String COIN_SPRITE = "src/main/resources/assets/land/collectible.png";
-
+    public static final String GAME_NAME = "Dark Dungeon";
+    public static final String MAP_FILE_PATH = "/maps/map.ber";
+    public static final Boolean ENEMIES_ACTIVE = true;
+    public static final int GAME_FRAMES_PER_SECOND = 40;
+    public static final char WALL_CHARACTER = '1';
+    public static final char EXIT_CHARACTER = 'E';
+    public static final char LAND_CHARACTER = '0';
+    public static final char PLAYER_CHARACTER = 'P';
+    public static final char ENEMY_CHARACTER = 'G';
+    public static final char COIN_CHARACTER = 'C';
+    public static final Integer SPRITE_SIZE = 64;
+    public static final String PLAYER_SPRITE = "/assets/hero/tile000.png";
+    public static final String GHOST_SPRITE = "/assets/ghost/tile000.png";
+    public static final String WALL_SPRITE = "/assets/land/wall.png";
+    public static final String LAND_SPRITE = "/assets/land/ground.png";
+    public static final String EXIT_SPRITE = "/assets/land/out.png";
+    public static final String COIN_SPRITE = "/assets/land/collectible.png";
 }

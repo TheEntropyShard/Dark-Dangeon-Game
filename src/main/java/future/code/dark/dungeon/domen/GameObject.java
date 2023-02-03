@@ -1,5 +1,7 @@
 package future.code.dark.dungeon.domen;
 
+import future.code.dark.dungeon.util.FileUtils;
+
 import javax.swing.ImageIcon;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -16,7 +18,7 @@ public abstract class GameObject {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
 
-        this.image = new ImageIcon(imagePath).getImage();
+        this.image = FileUtils.loadImage(imagePath);
     }
 
     public int getXPosition() {
